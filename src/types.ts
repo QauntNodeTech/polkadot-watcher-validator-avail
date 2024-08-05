@@ -36,6 +36,10 @@ export interface InputConfigFromGit {
 
 export interface PromClient {
     increaseBlocksProducedReports(name: string, address: string): void;
+    increaseOfflineReports(name: string, address: string): void;
+    setStatusOfflineRisk(name: string, address: string): void;
+    resetStatusOfflineRisk(name: string, address: string): void;
+    isStatusOfflineRiskFiring(name: string, address: string): boolean;
     increaseSlashedReports(name: string, address: string): void;
     setStatusOutOfActiveSet(name: string, address: string): void;
     resetStatusOutOfActiveSet(name: string, address: string): void;
@@ -70,6 +74,7 @@ export interface MatrixbotMsg {
 }
 
 export interface ValidatorImOnlineParameters {
+  isHeartbeatExpected: boolean;
   sessionIndex: SessionIndex;
   eraIndex: number;
   validatorActiveSet: Vec<ValidatorId>;

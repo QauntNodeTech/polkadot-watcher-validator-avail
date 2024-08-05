@@ -6,6 +6,8 @@ import { PromClient } from "../src/types";
 
 export class PrometheusMock implements PromClient {    
     private _blocksProducedReports = 0; 
+    private _offlineReports = 0; 
+    private _stateOfflineRisk = 0;
     private _slashedReports = 0; 
     private _stateOutOfActiveSet = 0;
     private _payeeChangedReports = 0; 
@@ -15,14 +17,28 @@ export class PrometheusMock implements PromClient {
 
     increaseBlocksProducedReports(name: string, address: string): void {
         this._blocksProducedReports++;
+        this.resetStatusOfflineRisk(name) //solve potential risk status
     }
     
+    increaseOfflineReports(name: string, address: string): void {
+      this._offlineReports++;
+    }
+
     increaseSlashedReports(name: string, address: string): void {
       this._slashedReports++;
-     }
+    }
+
+    setStatusOfflineRisk(name: string): void {
+      this._stateOfflineRisk = 1
+    }
+    resetStatusOfflineRisk(name: string): void {
+      this._stateOfflineRisk = 0
+    }
+    isStatusOfflineRiskFiring(name: string): boolean {return false}
 
     setStatusOutOfActiveSet(name: string): void {
       this._stateOutOfActiveSet = 1
+      this.resetStatusOfflineRisk(name) //solve potential risk status
     }
     resetStatusOutOfActiveSet(name: string): void {
       this._stateOutOfActiveSet = 0
@@ -49,7 +65,13 @@ export class PrometheusMock implements PromClient {
 
 
     get blocksProducedReports(): number {
-        return this._blocksProducedReports;
+      return this._blocksProducedReports;
+
+    get offlineReports(): number {
+      return this._offlineReports;
+    }
+    get statusOfflineRisk(): number {
+      return this._stateOfflineRisk;
     }
     get slashedReports(): number {
       return this._slashedReports;

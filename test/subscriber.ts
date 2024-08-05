@@ -92,6 +92,8 @@ describe('Subscriber cfg1, with a started network', async () => {
                 await delay(6000);
 
                 prometheus.blocksProducedReports.should.be.gt(1); //counters are init to 1 
+                prometheus.offlineReports.should.be.eq(1) //counters are init to 1 
+                prometheus.statusOfflineRisk.should.be.eq(0)
                 prometheus.slashedReports.should.be.eq(1) //counters are init to 1 
                 prometheus.statusOutOfActiveSet.should.be.eq(0)
                 prometheus.payeeChangedReports.should.be.eq(1) //counters are init to 1 
@@ -167,6 +169,7 @@ describe('Subscriber cfg2, with a started network', () => {
               await delay(6000);
 
               prometheus.blocksProducedReports.should.be.eq(1); //counters are init to 1 
+              prometheus.slashedReports.should.be.eq(1) //counters are init to 1
               prometheus.slashedReports.should.be.eq(1) //counters are init to 1 
               prometheus.statusOutOfActiveSet.should.be.eq(1)
               prometheus.payeeChangedReports.should.be.eq(1) //counters are init to 1 

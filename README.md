@@ -25,6 +25,8 @@ It can then monitor the status of the node, leveraging on mechanisms such as the
 
 ### Monitoring Features
 
+- An Active validator has been detected offline
+- An Active validator is risking to be caught offline, please act ASAP
 - A validator has been reported for Slash
 - A validator is not seleceted by Phragmen alorithm to be part of the active set
 - A validator has changed his payout address destination
@@ -39,9 +41,11 @@ If an expected destination address is specified in the config file, it is implic
 
 ### Resources
 
+- validators staking and heartbeats: https://wiki.polkadot.network/docs/en/learn-staking#unresponsiveness
 - session: https://wiki.polkadot.network/docs/en/glossary#session
 - era: https://wiki.polkadot.network/docs/en/glossary#era
 - polkadotJs library (raccomended, Nodejs + typescript): https://polkadot.js.org/docs/
+- event, validators offline: https://polkadot.js.org/docs/substrate/events#someofflinevecidentificationtuple
 - event, validator SlashReported: https://polkadot.js.org/docs/substrate/events/#slashreportedaccountid32-perbill-u32
 
 ## Configuration
