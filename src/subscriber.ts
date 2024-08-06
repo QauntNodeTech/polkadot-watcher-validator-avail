@@ -107,6 +107,7 @@ export class Subscriber {
 
         if(isOfflineEvent(event)){
           this._offlineEventHandler(event)
+        }
 
         if(isNewSessionEvent(event)){
           await this._newSessionEventHandler()

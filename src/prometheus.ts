@@ -31,7 +31,7 @@ export class Prometheus implements PromClient {
     }
 
     increaseBlocksProducedReports(name: string, address: string): void {
-        this.blocksProducedReports.inc({network:this.network, name, address, environment: this.environment })
+        this.blocksProducedReports.inc({network:this.network, name, address, environment: this.environment });
         this.resetStatusOfflineRisk(name, address) //solve potential risk status
     }
 
@@ -107,6 +107,8 @@ export class Prometheus implements PromClient {
         this.stateOfflineRisk = new promClient.Gauge({
             name: Prometheus.nameOfflineRiskMetric,
             help: 'Whether a validator has not produced a block and neither has sent an expected heartbeat yet. It is risking to be caught offline',
+            labelNames: ['network', 'name', 'address', 'environment']
+        });
         this.slashedReports = new promClient.Gauge({
             name: 'polkadot_validator_slashed_reports',
             help: 'Times a validator has been reported for slashing',
