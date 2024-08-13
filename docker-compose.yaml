@@ -1,0 +1,30 @@
+services:
+  polkadot-watcher-validator:
+    container_name: polkadot-watcher-validator
+    build:
+      context: .
+    restart: always
+    volumes:
+      - ./config/main.yaml:/app/config/main.yaml:ro
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+    - ./alerts/:/etc/prometheus/:ro
+    command: >
+      --config.file=/etc/prometheus/prometheus.yml
+      --storage.tsdb.retention.time=7d
+      --storage.tsdb.retention.size=1GB
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:latest
+    volumes:
+      - ./alerts/:/etc/alertmanager/:ro
+    restart: always
+    command: >
+      --config.file=/etc/alertmanager/alertmanager.yml
+      --data.retention=360h
+      --cluster.advertise-address=0.0.0.0:9093

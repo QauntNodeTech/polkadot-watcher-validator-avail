@@ -1,0 +1,84 @@
+groups:
+- name: polkador-validator-watcher-rules
+  rules:
+  - alert: ValidatorOutOfActiveSet
+    annotations:
+      message: 'Target {{ $labels.name }} is not present in the current validation active set because it has not been selected by Phragmen'
+    expr: max without(instance) (last_over_time(polkadot_validator_out_of_active_set_state[10m])) > 0
+    for: 2m
+    labels:
+      severity: info
+  - alert: ProducerStallShort
+    annotations:
+      message: 'Blocks were not produced for 1 hour by {{ $labels.name }}'
+      runbook_url: "https://github.com/w3f/infrastructure/wiki/Producer-Stall"
+    expr: max without(instance) (increase(polkadot_validator_blocks_produced[10m])) == 0 and max without(instance) (last_over_time(polkadot_validator_out_of_active_set_state[10m])) == 0
+    for: 60m
+    labels:
+      severity: warning
+  - alert: ProducerStallLong
+    annotations:
+      message: 'Blocks were not produced for 3 hours by $labels.name'
+      runbook_url: "https://github.com/w3f/infrastructure/wiki/Producer-Stall"
+    expr: max without(instance) (increase(polkadot_validator_blocks_produced[10m])) == 0 and max without(instance) (last_over_time(polkadot_validator_out_of_active_set_state[10m])) == 0
+    for: 180m
+    labels:
+      severity: critical
+  - alert: ValidatorOffline
+    annotations:
+      message: 'Target {{ $labels.name }} was reported offline. This message is going to RESOLVE by itself soon.'
+      runbook_url: "https://github.com/w3f/infrastructure/wiki/Validator-Offline"
+    expr: max without(instance) (increase(polkadot_validator_offline_reports[5m])) > 0
+    for: 30s
+    labels:
+      severity: critical
+  - alert: ValidatorOfflineRiskLong
+    annotations:
+      message: 'Target {{ $labels.name }} has either not authored any block or sent any heartbeat yet in this session. It is risking to be caught offline'
+    expr: max without(instance) (last_over_time(polkadot_validator_offline_risk_state[10m])) > 0
+    for: 10m
+    labels:
+      severity: critical
+  - alert: ValidatorOfflineRiskShort
+    annotations:
+      message: 'Target {{ $labels.name }} has either not authored any block or sent any heartbeat yet in this session. It is risking to be caught offline'
+    expr: max without(instance) (last_over_time(polkadot_validator_offline_risk_state[10m])) > 0
+    for: 8m
+    labels:
+      severity: warning       
+  - alert: ValidatorSlashed
+    annotations:
+      message: 'Target {{ $labels.name }} was reported for Slash. This message is going to RESOLVE by itself soon.'
+      runbook_url: "https://github.com/w3f/infrastructure/wiki/Validator-Slashed"
+    expr: max without(instance) (increase(polkadot_validator_slashed_reports[5m])) > 0
+    for: 30s
+    labels:
+      severity: critical
+  - alert: ValidatorRewardDestinationChanged
+    annotations:
+      message: 'Target {{ $labels.name }} may have changed his reward destination recently, please double check. This message is going to RESOLVE by itself soon.'
+    expr: max without(instance) (increase(polkadot_validator_payee_changed_reports[5m])) > 0
+    for: 30s
+    labels:
+      severity: warning
+  - alert: ValidatorCommissionRateChanged
+    annotations:
+      message: 'Target {{ $labels.name }} may have changed his commission rate recently, please double check. This message is going to RESOLVE by itself soon.'
+    expr: max without(instance) (increase(polkadot_validator_commission_changed_reports[5m])) > 0
+    for: 30s
+    labels:
+      severity: warning
+  - alert: ValidatorCommissionRateUnexpected
+    annotations:
+      message: 'Target {{ $labels.name }} has an unexpected commission rate, please double check.'
+    expr: max without(instance) (last_over_time(polkadot_validator_unexpected_commission_state[10m])) > 0
+    for: 1m
+    labels:
+      severity: warning
+  - alert: ValidatorRewardDestinationUnexpected
+    annotations:
+      message: 'Target {{ $labels.name }} has an unexpected reward destination, please double check.'
+    expr: max without(instance) (last_over_time(polkadot_validator_unexpected_payee_state[10m])) > 0
+    for: 1m
+    labels:
+      severity: warning
