@@ -63,6 +63,17 @@ The list of your addresses can be dynamically retrieved (app startup/restart) fr
 A Prometheus instance can be attached to this application thanks to the endpoint exposed at [/metrics](https://github.com/w3f/polkadot-watcher-validator/blob/master/src/prometheus.ts#L114).  
 An Alerting system can be then built on top of that, see [here](charts/polkadot-watcher/templates/alertrules.yaml)
 
+Sample Alerting build withing docker compose done in docker-compose.yaml.
+Files in ./alerts/ should be modified according your alerting preferences.
+
+```bash
+cp ./alerts/alertmanager{.sample,}.yml
+cp ./alerts/alertrules{.sample,}.yml
+cp ./alerts/prometheus{.sample,}.yml
+cp ./alerts/telegram{.sample,}.tmpl
+docker compose up -d
+```
+
 ## Deployment 
 
 The [Dockerfile](Dockerfile) can be deployed into a Kubernetes cluster thanks to the polkadot-watcher [chart](charts/polkadot-watcher).
