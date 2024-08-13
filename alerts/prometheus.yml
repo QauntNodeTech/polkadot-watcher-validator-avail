@@ -1,0 +1,14 @@
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - 'alertmanager:9093'
+
+rule_files:
+  - "alertrules.yml"
+
+scrape_configs:
+  - job_name: 'polkadot-watcher-validator'
+    static_configs:
+      - targets:
+        - 'polkadot-watcher-validator:3000'

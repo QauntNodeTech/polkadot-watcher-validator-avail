@@ -1,0 +1,7 @@
+{{ define "telegram.message" }}
+{{ if gt (len .Alerts.Firing) 0 }}
+{{ range .Alerts.Firing }}<b>&#x26A0; </b>{{ .Annotations.message }}
+{{ end }}{{ end }}
+{{ if gt (len .Alerts.Resolved) 0 }}
+{{ range .Alerts.Resolved }}<b>&#x2705; </b>{{ .Annotations.message }}
+{{ end }}{{ end }}{{ end }}
