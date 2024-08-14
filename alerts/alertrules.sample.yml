@@ -18,7 +18,7 @@ groups:
       severity: warning
   - alert: ProducerStallLong
     annotations:
-      message: 'Blocks were not produced for 3 hours by $labels.name'
+      message: 'Blocks were not produced for 3 hours by {{ $labels.name }}'
       runbook_url: "https://github.com/w3f/infrastructure/wiki/Producer-Stall"
     expr: max without(instance) (increase(polkadot_validator_blocks_produced[10m])) == 0 and max without(instance) (last_over_time(polkadot_validator_out_of_active_set_state[10m])) == 0
     for: 180m
